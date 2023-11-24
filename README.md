@@ -1,6 +1,6 @@
 # furiusisomount
 Furius ISO Mount updated with Python 3 and GTK 3
 
-I used this program a lot until newer versions of Linux got rid of Python 2, and got rid of this program along with it. I don't guess anyone else wants to maintain it, so I guess I'll do it by using chatGPT. I used Chat GPT 4 to update this software to Python 3, to use GTK 3, and had it update the glade file to glade 3. I don't actually know much Python, nor am I very familiar with glade stuff yet.
+I used chatGPT 4 to update all of the code since I dont really know much python or glade, and nobody else updated this to work on current Linux distros that got rid of python 2.
 
-Anyway; this simulates a cd rom drive for mounting iso files. I have some old windows pc games that I like to run from iso files, but simply mounting them does not work, because the system does not recognize the mounted drives as CD Rom drives. That is not a problem with this program.
+This simulates a cd rom drive for mounting iso files. I have some old windows pc games that I like to run from iso files, but simply mounting them does not work, because the system does not recognize the mounted drives as CD Rom drives. That is not a problem with this program.
