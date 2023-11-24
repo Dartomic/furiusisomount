@@ -256,12 +256,16 @@ class MainWindow:
 
     def select_image(self):
         is_file_selected = False
-        dialog = Gtk.FileChooserDialog(_('Open Image..'),
-                       None,
-                       Gtk.FileChooserAction.OPEN,
-                       (Gtk.STOCK_CANCEL, Gtk.ResponseType.CANCEL,
-                        Gtk.STOCK_OPEN, Gtk.ResponseType.OK))
+        dialog = Gtk.FileChooserDialog(
+            title=_("Open Image.."),
+            action=Gtk.FileChooserAction.OPEN
+        )
+        dialog.add_buttons(
+            Gtk.STOCK_CANCEL, Gtk.ResponseType.CANCEL,
+            Gtk.STOCK_OPEN, Gtk.ResponseType.OK
+        )
         dialog.set_default_response(Gtk.ResponseType.OK)
+
         response = dialog.run()
         if response == Gtk.ResponseType.OK:
             comboentry_image = self.builder.get_object('comboentry_image')
@@ -270,12 +274,11 @@ class MainWindow:
         dialog.destroy()
         return is_file_selected
 
+
     def verify_image(self, image=''):
-        if image == '':
-            comboentry_image = self.builder.get_object('comboentry_image')
-            selected_file = comboentry_image.get_active_text()
-        else:
-            selected_file = image
+        comboentry_image = self.builder.get_object('comboentry_image')
+        selected_file = image if image else comboentry_image.get_child().get_text()
+
         # First, ensure that the file exists
         if not os.path.exists(selected_file):
             messagebox.show(self.builder.get_object('main_window'), _('File not found. \nPlease check source exists.'), Gtk.MessageType.ERROR)
@@ -284,26 +287,29 @@ class MainWindow:
             self.builder.get_object('button_checksum').set_sensitive(False)
             self.builder.get_object('button_burn').set_sensitive(False)
             return False
+
         # Next, ensure it's a supported image
         if selected_file.lower().endswith(('.iso', '.img', '.bin', '.mdf', '.nrg')):
             self.builder.get_object('label_selected_image').set_label(selected_file)
             self.builder.get_object('button_mount').set_sensitive(True)
             self.builder.get_object('button_checksum').set_sensitive(True)
             self.builder.get_object('button_burn').set_sensitive(True)
+
             # Loop method only supports ISO and IMG, so...
             if selected_file.lower().endswith(('.iso', '.img')):
                 self.builder.get_object('radiobutton_loop').set_sensitive(True)
             else:
                 self.builder.get_object('radiobutton_loop').set_sensitive(False)
                 self.builder.get_object('radiobutton_fuse').set_active(True)
+
             return True
+
         messagebox.show(self.builder.get_object('main_window'), _('File does not appear to be a compatible Image. \nPlease check source.'), Gtk.MessageType.ERROR)
         self.builder.get_object('label_selected_image').set_label(_('No Image Selected'))
         self.builder.get_object('button_mount').set_sensitive(False)
         self.builder.get_object('button_checksum').set_sensitive(False)
         self.builder.get_object('button_burn').set_sensitive(False)
         return False
-
 
     def button_view_log_clicked(self, button):
         if os.path.exists(globals.mount_log):
@@ -418,9 +424,3 @@ if __name__ == '__main__':
         parameter = sys.argv[1]
     app = MainWindow(parameter)
     Gtk.main()
-
-
-
-
-
-
